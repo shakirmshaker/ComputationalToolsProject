@@ -21,7 +21,7 @@ class DanishAddressCrawler():
             "Copenhagen" : 101,
             "Aarhus" : 751,
             "Odense" : 461,
-            "Roskilde" : 265
+            "Roskilde" : 265,
             # TODO: Add more municipalities
         }
 
