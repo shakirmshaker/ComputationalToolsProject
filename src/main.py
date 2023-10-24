@@ -30,7 +30,7 @@ def main():
         # 2. Crawl addresses information
         root_url =  os.getenv("RENT_URL")
         input_file = input("Please provide the input file name: ")
-        bo_crawler = PropertyCrawler(root_url=root_url, input_file=input_file)
+        bo_crawler = PropertyCrawler(root_url=root_url, input_file=input_file, anonymity= False)
         bo_crawler.crawl()
     else:
         print("Error: Invalid option. Please choose 1 or 2.")

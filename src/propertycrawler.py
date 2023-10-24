@@ -5,6 +5,7 @@ This class is used for crawling information from rental website
 import json
 import random
 import time
+import requests
 
 from bs4 import BeautifulSoup
 
@@ -64,4 +65,27 @@ class PropertyCrawler():
 		# TODO: Simple crawler
 		# Care to not overload the site, also put proper agent to not get blocked.
 		# Follow the same approach as the `danishaddresscrawler` file.
-		raise NotImplementedError
+		all_data = []
+
+		for address in self.addresses_list:
+			print("Address to crawl: {}".format('https://www.boligsiden.dk/adresse/' + address))
+			# Random sleep time to not overload the site and be less sus
+			time.sleep(random.randint(1, 3))
+			response = requests.get('https://www.boligsiden.dk/adresse/' + address)
+			if response.status_code == 200:
+				soup = BeautifulSoup(response.content, 'html.parser')
+				script_tag = soup.find('script', {'id': '__NEXT_DATA__'})
+				if script_tag:
+					json_text = script_tag.string
+					data = json.loads(json_text)
+					all_data.append(data)
+					#print("Json data: {}".format(data))
+					print("Dataset added successfully!")
+				else:
+					print(f"Script tag not found for {address}")
+			else:
+				print(f"Failed to retrieve {address}")
+
+		with open('XXX_addresses_data.json', 'w') as f:
+			json.dump(all_data, f, indent=4)
+		#raise NotImplementedError

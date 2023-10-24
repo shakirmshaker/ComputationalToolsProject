@@ -22,6 +22,7 @@ class DanishAddressCrawler():
             "Aarhus" : 751,
             "Odense" : 461,
             "Roskilde" : 265,
+            "Frederiksberg" : 147
             # TODO: Add more municipalities
         }
 
@@ -68,7 +69,7 @@ class DanishAddressCrawler():
 
     async def __get_results_page(self, page, session, retries=5):
         url = self.root_url + "?per_side=" + str(self.page_number) \
-            + "&side=" + str(page) + "&sogn=" + str(self.municipality)
+            + "&side=" + str(page) + "&kommunekode=" + str(self.municipality)
         async with session.get(url) as response:
             json_data = await response.json()
             status = response.status
