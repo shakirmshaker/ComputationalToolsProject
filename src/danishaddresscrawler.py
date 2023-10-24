@@ -10,20 +10,43 @@ import aiohttp
 
 class DanishAddressCrawler():
 
-    def __init__(self, page_number, root_url, headers) -> None:
+    def __init__(self, page_number, root_url, headers, municipality="Copenhagen") -> None:
         self.page_number = page_number
         self.root_url = root_url
         self.headers = headers
-        self.municipality = self.__get_municipality_records()["Copenhagen"]
+        self.municipality = self.__get_municipality_records()[municipality]
 
     def __get_municipality_records(self) -> dict:
         return {
-            "Copenhagen" : 101,
-            "Aarhus" : 751,
-            "Odense" : 461,
-            "Roskilde" : 265,
-            "Frederiksberg" : 147
-            # TODO: Add more municipalities
+            "Copenhagen": 101,
+            "Frederiksberg": 147,
+            "Gentofte": 157,
+            "Gladsaxe": 159,
+            "Helsingør": 217,
+            "Rudersdal": 230,
+            "Lyngby-Taarbæk": 173,
+            "Hvidovre": 167,
+            "Hillerød": 219,
+            "Høje-Taastrup": 169,
+            "Ballerup": 151,
+            "Frederikssund": 250,
+            "Egedal": 240,
+            "Bornholm": 400,
+            "Tårnby": 185,
+            "Gribskov": 270,
+            "Fredensborg": 210,
+            "Furesø": 190,
+            "Rødovre": 175,
+            "Brøndby": 153,
+            "Halsnæs": 260,
+            "Albertslund": 165,
+            "Herlev": 163,
+            "Hørsholm": 223,
+            "Allerød": 201,
+            "Glostrup": 161,
+            "Ishøj": 183,
+            "Vallensbæk": 187,
+            "Dragør": 155,
         }
 
     @staticmethod
@@ -64,7 +87,7 @@ class DanishAddressCrawler():
                     print("`adressebetegnelse`: {}".format(adressebetegnelse))
                     print("`slugified_adresse`: {}".format(slugified_adresse))
             
-            with open(str(self.municipality) + "_results.json", mode="w", encoding="utf-8") as df:
+            with open(str(self.municipality) + "_addresses.json", mode="w", encoding="utf-8") as df:
                 json.dump(json_data_file, df)
 
     async def __get_results_page(self, page, session, retries=5):
