@@ -49,9 +49,24 @@ class PropertyCrawler():
 	def __tor_crawl(self):
 		ip = self.tor_handler.open_url("http://icanhazip.com/")
 		print("First IP: {}".format(ip))
-		json_data_list = []
 		destination_file = str(self.municipality) + "_properties.json"
+
+		if not os.path.isfile(destination_file):
+			with open(destination_file, mode="w") as df:
+				df.write(json.dumps([], indent=2))
+
 		for address in self.addresses_list:
+
+			with open(file=destination_file, mode="r") as sf:
+				source_file = json.load(sf)
+
+			# If address exists in json file, do not crawl
+
+			if any(address.endswith(address_["props"]["pageProps"]["dataLayer"]["virtualPagePath"]) for address_ in source_file):
+				print("\nAddress already exists in file\n")
+				continue
+			
+
 			print("Address to crawl: {}".format(address))
 			# Random sleep time to not overload the site and be less sus
 			time.sleep(random.randint(1, 3))
@@ -62,18 +77,10 @@ class PropertyCrawler():
 			soup = BeautifulSoup(content)
 			json_data = json.loads(soup.find("script", type="application/json").text)
 			print("Json data: {}".format(json_data))
-
-			if not os.path.isfile(destination_file):
-				json_data_list.append(json_data)
-				with open(destination_file, mode="w") as df:
-					df.write(json.dumps(json_data_list, indent=2))
-			else:
-				with open(file=destination_file, mode="r") as sf:
-					source_file = json.load(sf)
 				
-				source_file.append(json_data)
-				with open(file=destination_file, mode="w") as df:
-					df.write(json.dumps(source_file, indent=2))
+			source_file.append(json_data)
+			with open(file=destination_file, mode="w") as df:
+				df.write(json.dumps(source_file, indent=2))
 					
 			# Formatted json 
 			# formatted_data = json.dumps(json_data, indent=4)
