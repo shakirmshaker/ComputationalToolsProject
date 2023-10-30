@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 while getopts ":mp" opt; do
     case $opt in
@@ -16,7 +16,7 @@ while getopts ":mp" opt; do
             
             for file_addresses in "${address_files[@]}"; do
                 echo "Crawling properties using $file_addresses..."
-                ( echo -e "2\n$file_addresses\n" | python main.py ) & 
+                nohup zsh -c "echo -e '2\n$file_addresses\n' | python main.py" &
             done
         ;;
         \?)
