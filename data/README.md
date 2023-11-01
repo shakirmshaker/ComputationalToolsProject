@@ -12,5 +12,6 @@ Record counts:
 - File 190_properties.json records: 1370
 - File 201_properties.json records: 2384
 - File 210_properties.json records: 917
+- File 223_properties.json records: 466
 - File 260_properties.json records: 4661
 - File 270_properties.json records: 1934
