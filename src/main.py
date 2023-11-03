@@ -17,20 +17,24 @@ def main():
         "Connection": "keep-alive"
     }
 
-    option = input("Options:\n1. Crawl addresses by municipality\n2. Crawl addresses information\nChoose an option (1 or 2): ")
+    option = input(
+        "Options:\n1. Crawl addresses by municipality\n2. Crawl addresses information\nChoose an option (1 or 2): ")
 
     if option == "1":
         # 1. Crawl addresses by municipality
         root_url = os.getenv("API_URL")
         page_number = os.getenv("PAGE_SIZE")
-        input_municipality = input("Please provide a municipality (e.g. Copenhagen): ")
-        da_crawler = DanishAddressCrawler(page_number, root_url, headers, municipality=input_municipality)
+        input_municipality = input(
+            "Please provide a municipality (e.g. Copenhagen): ")
+        da_crawler = DanishAddressCrawler(
+            page_number, root_url, headers, municipality=input_municipality)
         da_crawler.crawl()
     elif option == "2":
         # 2. Crawl addresses information
-        root_url =  os.getenv("RENT_URL")
+        root_url = os.getenv("RENT_URL")
         input_file = input("Please provide the input file name: ")
-        bo_crawler = PropertyCrawler(root_url=root_url, input_file=input_file, anonymity= True)
+        bo_crawler = PropertyCrawler(
+            root_url=root_url, input_file=input_file, anonymity=True)
         bo_crawler.crawl()
     else:
         print("Error: Invalid option. Please choose 1 or 2.")

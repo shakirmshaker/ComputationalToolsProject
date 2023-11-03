@@ -52,20 +52,21 @@ class DanishAddressCrawler():
     @staticmethod
     def is_valid(response: dict) -> bool:
         return not "type" in response
-    
-    def crawl(self):
+
+    def crawl(self) -> None:
         asyncio.run(self.__get_results())
 
     async def __get_results(self) -> None:
         async with aiohttp.ClientSession(headers=self.headers) as session:
-            
+
             tasks = []
-            # TODO: Fix range, add custom range. Is there a way to get number of records?
             for page in range(0, 1000):
-                tasks.append(asyncio.ensure_future(self.__get_results_page(page, session)))
+                tasks.append(asyncio.ensure_future(
+                    self.__get_results_page(page, session)))
 
             json_data_list = await asyncio.gather(*tasks)
-            json_data_flattened_list = [item for sublist in json_data_list if isinstance(sublist, list) for item in sublist]
+            json_data_flattened_list = [item for sublist in json_data_list if isinstance(
+                sublist, list) for item in sublist]
 
             json_data_file = []
             for json_data in json_data_flattened_list:
@@ -75,22 +76,21 @@ class DanishAddressCrawler():
                     id = json_data["id"]
                     slugified_adresse = slugify(adressebetegnelse)
                     json_data_file.append({
-                        "id" : id,
-                        "kvhx" : kvhx,
-                        "adressebetegnelse" : adressebetegnelse,
-                        "slugified_adresse" : slugified_adresse,
+                        "id": id,
+                        "kvhx": kvhx,
+                        "adressebetegnelse": adressebetegnelse,
+                        "slugified_adresse": slugified_adresse,
                         "municipality": self.municipality
                     })
-                    print("========================")
-                    print("`kvhx`: {}".format(kvhx))
-                    print("`id`: {}".format(id))
-                    print("`adressebetegnelse`: {}".format(adressebetegnelse))
-                    print("`slugified_adresse`: {}".format(slugified_adresse))
-            
+                    print("Log: `kvhx`: {}".format(kvhx))
+                    print("Log: `id`: {}".format(id))
+                    print("Log: `adressebetegnelse`: {}".format(adressebetegnelse))
+                    print("Log: `slugified_adresse`: {}".format(slugified_adresse))
+
             with open(str(self.municipality) + "_addresses.json", mode="w", encoding="utf-8") as df:
                 json.dump(json_data_file, df)
 
-    async def __get_results_page(self, page, session, retries=5):
+    async def __get_results_page(self, page: int, session: aiohttp.ClientSession, retries=5):
         url = self.root_url + "?per_side=" + str(self.page_number) \
             + "&side=" + str(page) + "&kommunekode=" + str(self.municipality)
         async with session.get(url) as response:

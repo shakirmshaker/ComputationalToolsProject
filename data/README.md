@@ -15,3 +15,10 @@ Record counts:
 - File 223_properties.json records: 466
 - File 260_properties.json records: 4661
 - File 270_properties.json records: 1934
+- **File 147_properties.json records: 15300**
+
+The complete .json and .csv is
+- 147_properties.json
+- 147_properties.csv
+
+
