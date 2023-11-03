@@ -1,0 +1,2 @@
+data/147_properties.json filter=lfs diff=lfs merge=lfs -text
+data/147_properties.csv filter=lfs diff=lfs merge=lfs -text
