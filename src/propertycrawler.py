@@ -7,7 +7,7 @@ import random
 import time
 import requests
 import os
-import urllib.error.HTTPError
+from urllib.error import HTTPError
 
 from bs4 import BeautifulSoup
 
@@ -77,7 +77,7 @@ class PropertyCrawler():
             # Add exception for specific error in the handler 
             try:
                 content = self.tor_handler.open_url(address)
-            except urllib.error.HTTPError:
+            except HTTPError:
                 # This one failed, ignore for now, for some reason the TOR handler crushed
                 # It will be recrawled anyway
                 print("Error: Tor handler crushed.")
