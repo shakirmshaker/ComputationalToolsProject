@@ -1,2 +1,4 @@
-147_properties.csv filter=lfs diff=lfs merge=lfs -text
+260_properties.json filter=lfs diff=lfs merge=lfs -text
+161_properties.json filter=lfs diff=lfs merge=lfs -text
 147_properties.json filter=lfs diff=lfs merge=lfs -text
+147_properties.csv filter=lfs diff=lfs merge=lfs -text
