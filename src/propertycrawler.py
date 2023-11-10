@@ -8,7 +8,6 @@ import time
 import requests
 import os
 from urllib.error import HTTPError
-
 from bs4 import BeautifulSoup
 
 from torhandler import TorHandler
@@ -61,10 +60,8 @@ class PropertyCrawler():
             with open(file=destination_file, mode="r") as sf:
                 source_file = json.load(sf)
 
-            # If address exists in json file, do not crawl
-
-            if any(address.endswith(address_["props"]["pageProps"]["dataLayer"]["virtualPagePath"]) for address_ in source_file):
-                print("Log: \nAddress already exists in file\n")
+            if any([address.endswith(address_["props"]["pageProps"]["address"]["slug"]) for address_ in source_file]):
+                print(f"Log: Address `{address}` already exists in file\n")
                 continue
 
             print("Log: Address to crawl: {}".format(address))
