@@ -44,7 +44,7 @@ def argument_help():
     python main.py -o merged.json -i file1_properties.json file2_properties.json file3_properties.json
 
     Processing a JSON file:
-    python main.py -o processed.json -p file_properties.json
+    python main.py -p file_properties.json
     """
     print(help_text)
 
@@ -79,7 +79,7 @@ def main():
     elif args.input and args.output:
         json_merger = JSONMerger(args.input, args.output)
         json_merger.call()
-    elif args.process and args.output:
+    elif args.process:
         json_process = JSONProcessor(args.process)
         json_process.call()
     elif args.help:
