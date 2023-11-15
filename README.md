@@ -38,3 +38,7 @@
 - Pandas for data manipulation
 - Scikit-learn for k-means clustering, Davies-Bouldin index evaluation, and regression modeling
 - Matplotlib or Seaborn for visualization
+
+## Datasets available on Drive (*temporal solution cause I cannot edit the repo settings*)
+
+[Datasets on Drive](https://drive.google.com/drive/folders/1jSHKgj2lhCqtPCAkrRKxvvovMqEWPDtU?usp=sharing)

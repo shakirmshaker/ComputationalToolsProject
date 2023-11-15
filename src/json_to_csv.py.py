@@ -5,6 +5,7 @@ import re
 from tqdm import tqdm
 from collections import defaultdict
 
+
 def flatten_json(y):
     """ Flatten nested JSON and return flat DataFrame. """
     out = {}
@@ -24,9 +25,11 @@ def flatten_json(y):
     flatten(y)
     return out
 
+
 def append_df_to_csv(df, filename, mode='a', header=False):
     """ Append DataFrame to CSV with option to include header. """
     df.to_csv(filename, mode=mode, header=header, index=False)
+
 
 def get_file_groups(directory):
     """ Group files by the 'XXX' prefix in the filename. """
@@ -38,8 +41,9 @@ def get_file_groups(directory):
         if match:
             prefix = match.group(1)
             file_groups[prefix].append(filename)
-    
+
     return file_groups
+
 
 # Directory containing the JSON files
 directory = '.'
@@ -59,9 +63,11 @@ for prefix, files in file_groups.items():
             for item in tqdm(data, desc=f"Processing {file_name}"):
                 flattened_data = flatten_json(item)
                 df = pd.DataFrame([flattened_data])
-                append_df_to_csv(df, csv_filename, header=not is_header_written)
+                append_df_to_csv(df, csv_filename,
+                                 header=not is_header_written)
                 is_header_written = True  # Set to True after the first write operation
 
-    print(f"Data extraction complete for group {prefix}. CSV file '{csv_filename}' saved.")
+    print(
+        f"Data extraction complete for group {prefix}. CSV file '{csv_filename}' saved.")
 
 print("All processing complete.")
