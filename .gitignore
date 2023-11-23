@@ -1,6 +1,5 @@
 venv
-env
 __pycache__
 .env
 nohup.out
-bigData
+csv_data
