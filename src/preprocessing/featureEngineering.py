@@ -38,6 +38,4 @@ def feature_eniginering(df):
 
 preprocessed_data = feature_eniginering(cleaned_data)
 
-# Remove outliers
-
 preprocessed_data.to_csv('../../data/processed_data/preprocessed_data.csv', index = False)
