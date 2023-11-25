@@ -29,18 +29,4 @@
 
 # Folder structure
 
-data: Contains all datasets used datasets
-- converted_data: Contains data that has been converted from json to csv
-- processed_data: Contains data that has undergone processing steps such as cleaning, merging, or transformation.
-- raw_data: Contains the initial, scraped datasets in json format.
-notebooks: Contains Jupyter notebooks used for interactive computing and data analysis.
-- dataExploration.ipynb: A notebook used for exploring and understanding the data.
-- kMeans.ipynb: A notebook for running the k-Means clustering algorithm.
-- machineLearning.ipynb: A notebook for running the machine learning algorithm.
-plots: This folder contains visualizations generated from the data.
-src: Source directory for the project’s Python scripts.
-- preprocessing: Contains scripts for data preprocessing.
--- dataCleaning.py: Script for cleaning data
--- featureEngineering.py: Script for feature engineering tasks.
-scraping: Contains scripts related to the web scraping
-requirements.txt: Contains a list of Python packages required for the project.
+Empty

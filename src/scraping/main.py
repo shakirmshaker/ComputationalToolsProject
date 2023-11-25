@@ -34,11 +34,11 @@ def argument_help():
     -h, --help         Show this help message and exit.
 
     Examples:
-    Crawling Danish addresses:
+    Crawling Copenhagen addresses:
     python main.py -a Copenhagen
 
     Crawling property information:
-    python main.py -d x_addresses.json
+    python main.py -d /path/to/addresses.json
 
     Merging JSON files:
     python main.py -o merged.json -i file1_properties.json file2_properties.json file3_properties.json

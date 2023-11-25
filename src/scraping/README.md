@@ -1,78 +1,80 @@
 # Crawling
 
-The crawling method using **tor** was inspired by [Tor IP rotation](https://github.com/baatout/tor-ip-rotation-python-example).
+We provide an option to run the crawling anonymously by using **Tor**.
 
-You do not have to use tor, I added it as an option.
+We leverage [asyncio](https://docs.python.org/3/library/asyncio.html) library for our requests and utilize [beautifulsoup](https://pypi.org/project/beautifulsoup4) to get the information we need.
 
-*101_results.json* was the result of getting all the addressses from Copenhagen (101) municipality.
-*example.json* is an example property record by the rental website.
+## Usage
 
-## How to run
+The following is the crawling usage.
 
-First run main.py option **1.** to get the addresses from the specific municipality (there should be an option to chose for municipality) and then option **2.** to get rental and further information.
+```bash
+Usage: script.py [-h] [-a ADDRESS] [-d DATAFILE] [-o OUTPUT] [-i INPUT [INPUT ...]] [-p PROCESS]
 
-## TODO
+    This script can crawl Danish addresses, crawl property information, merge JSON files, or process a single JSON file.
 
-- [ ] Add option to choose municipality
-- [ ] Fill in TODO in code, have the option to scrap without TOR.
-- [ ] Find how to get the total records
+    Address Crawler Arguments:
+    -a, --address      Specify a municipality for Danish address crawler. 
+                       This option triggers the Danish Address Crawler.
 
-## To use TOR
+    Property Crawler Arguments:
+    -d, --datafile     Specify the input file name for the property crawler. 
+                       This option triggers the Property Crawler.
 
-This information was taken by the [Tor IP rotation](https://github.com/baatout/tor-ip-rotation-python-example).
+    JSON Merger/Processor Arguments:
+    -o, --output       Specify the output JSON file for merging or processing.
+                       This is a required argument for JSON merging or processing.
+    -i, --input        List of input JSON files to merge. Separate multiple files with spaces.
+                       This option, used with -o, triggers the JSON Merger.
+    -p, --process      Specify a single JSON file to post-process.
+                       This option, used with -o, triggers the JSON Processor.
 
-## Requirements
-PS: **These are the requirments for Mac OS X**. You can find the requirements for Linux in [PyTorStemPrivoxy](https://github.com/FrackingAnalysis/PyTorStemPrivoxy).
+    General Arguments:
+    -h, --help         Show this help message and exit.
 
-### Tor
-```shell
-brew update
-brew install tor
+    Examples:
+    Crawling Copenhagen addresses:
+    python main.py -a Copenhagen
+
+    Crawling property information:
+    python main.py -d /path/to/addresses.json
+
+    Merging JSON files:
+    python main.py -o merged.json -i file1_properties.json file2_properties.json file3_properties.json
+
+    Processing a JSON file:
+    python main.py -p file_properties.json
 ```
 
-*Notice that the socks listener is on port 9050.*
-
-Next, do the following:
-- Enable the ControlPort listener for Tor to listen on port 9051, as this is the port to which Tor will listen for any communication from applications talking to the Tor controller.
-- Hash a new password that prevents random access to the port by outside agents.
-- Implement cookie authentication as well.
-
-You can create a hashed password out of your password using:
-```shell
-tor --hash-password my_password
+To enable or disable TOR, modify the [**anonymity**](/src/scraping/main.py) variable (by default set to ```False```):
+```python
+bo_crawler = PropertyCrawler(root_url=root_url, input_file=args.datafile, anonymity=True)
 ```
 
-Then, update the `/usr/local/etc/tor/torrc` with the port, hashed password, and cookie authentication.
-```shell
-# content of torrc
-ControlPort 9051
-# hashed password below is obtained via `tor --hash-password my_password`
-HashedControlPassword 16:E600ADC1B52C80BB6022A0E999A7734571A451EB6AE50FED489B72E3DF
-CookieAuthentication 1
+### [TorHandler](/src/scraping/torhandler.py)
+
+The crawling method using **Tor** was inspired by [Tor IP rotation](https://github.com/baatout/tor-ip-rotation-python-example). I conducted the crawling at a Fedora 37 Linux machine.
+You can find the requirements for Linux in [PyTorStemPrivoxy](https://github.com/FrackingAnalysis/PyTorStemPrivoxy).
+
+## .env
+
+The following variables can be found at ```.template.env```.
+```bash
+RENT_URL=   # The property website (https://www.boligsiden.dk/)
+API_URL=    # The Danish Address API (https://dawadocs.dataforsyningen.dk/dok/api#adresser-1)    
+TOR_PWD=    # Your Tor password if you use anonymous crawling
+PAGE_SIZE=  # The page size when collecting addresses from Danish Address API 
 ```
 
-Restart Tor again to the configuration changes are applied.	
-```shell
-brew services restart tor
-```
+## Files
 
-### Privoxy
-
-Tor itself is not a http proxy. So in order to get access to the Tor Network, use `privoxy` as an http-proxy though socks5.
-
-Install `privoxy` via the following command:
-	
-```shell
-brew install privoxy
-```
-
-Now, tell `privoxy` to use TOR by routing all traffic through the SOCKS servers at localhost port 9050.
-To do that append `/usr/local/etc/privoxy/config` with the following
-```shell
-forward-socks5t / 127.0.0.1:9050 . # the dot at the end is important
-```
-
-Restart `privoxy` after making the change to the configuration file.
-```shell
-brew services restart privoxy
+```bash
+.
+|-- README.md                   # General information on the crawling and running instructions
+|-- danishaddresscrawler.py     # Class for collecting addresses per municipality
+|-- jsonmerger.py               # Json merger in case the results of crawling are on different files
+|-- jsonprocessor.py            # Converting .json files to .csv while filtering columns for processing
+|-- main.py                     # Main function with usage
+|-- propertycrawler.py          # Class for crawling asynchronously (+ option for anonymous crawling) 
+`-- torhandler.py               # Custom Tor handler for http requests to use for anonymous crawling
 ```
