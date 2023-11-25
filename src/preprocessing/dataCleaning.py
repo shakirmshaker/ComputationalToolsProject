@@ -77,8 +77,6 @@ def imputation(df):
     # Ensure nan consistensy
     df = df.applymap(lambda x: np.nan if pd.isna(x) else x)
 
-    #print(df.dtypes)
-
     # Separating the categorical and numerical columns
     categorical_columns = df.select_dtypes(include=['object']).columns
     numerical_columns = df.select_dtypes(exclude=['object']).columns
