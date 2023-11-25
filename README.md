@@ -6,7 +6,7 @@
 ### Feature Engineering:
 - Extract and process relevant features that influence property prices.
 
-### Neighborhood Clustering with k-means:
+### Clustering with k-means:
 - Use the k-means algorithm to cluster properties based on the average values of the features.
 - Determine the optimal number of clusters using methods like the Elbow method.
 - Cluster Evaluation using Davies-Bouldin Index:
